@@ -27,6 +27,17 @@
                 </rewrite>
             </core>
 		</blocks>
+        <events>
+            <controller_action_postdispatch>
+                <observers>
+                    <aoe_profiler>
+                        <class>Aoe_Profiler_Model_Observer</class>
+                        <type>singleton</type>
+                        <method>outputToFile</method>
+                    </aoe_profiler>
+                </observers>
+            </controller_action_postdispatch>
+        </events>
 	</global>
 
 	<default>

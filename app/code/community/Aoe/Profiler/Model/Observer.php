@@ -12,4 +12,8 @@ class Aoe_Profiler_Model_Observer {
 		Varien_Profiler::stop($block->getNameInLayout());
 	}
 
+    public function outputToFile($event)
+    {
+        Mage::helper('aoe_profiler')->renderProfilerOutputToFile2();
+    }
 }

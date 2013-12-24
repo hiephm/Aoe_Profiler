@@ -83,4 +83,30 @@ class Aoe_Profiler_Helper_Data extends Mage_Core_Helper_Abstract {
 		return $fileName;
 	}
 
+    public function renderProfilerOutputToFile2() {
+
+        $layout = Mage::app()->getLayout();
+        $layout->getUpdate()->resetHandles();
+        $layout->getUpdate()->addHandle(array('default', 'page_one_column'));
+        $layout->getUpdate()->load();
+        $layout->generateXml()->generateBlocks();
+
+        $root = $layout->getBlock('root');
+        $template = "page/empty.phtml";
+        $root->setTemplate($template);
+        $block = $layout->createBlock('core/profiler', 'profiler');
+        $block->setForceRender(TRUE);
+        /** @var $content Mage_Core_Block_Text_List */
+        $content = $root->getChild('content');
+        $content->append($block, 'profiler_output');
+        $content = $root->toHtml();
+        $fullActionName = '';
+        $fullActionName .= Mage::app()->getRequest()->getModuleName() . '_';
+        $fullActionName .= Mage::app()->getRequest()->getControllerName() . '_';
+        $fullActionName .= Mage::app()->getRequest()->getActionName();
+        file_put_contents(Mage::getBaseDir('var') . DS . 'log' . DS . time() . '_' . $fullActionName .".html", $content);
+
+    }
+
+
 }
